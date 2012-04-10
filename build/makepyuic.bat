@@ -1,0 +1,1 @@
+pyuic4 ../mainwindow.ui -o ../windowUi.py

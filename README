@@ -1,0 +1,8 @@
+python script to fix issue with iBooks 2 million pixel limit on images.
+
+notes:
+
+-still under development
+-uses our epub module (also unfinished)
+
+enjoy
