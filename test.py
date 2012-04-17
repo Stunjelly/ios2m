@@ -32,7 +32,7 @@ class Main(QtGui.QMainWindow):
         self.ui.btnabout.clicked.connect(self.AboutDialog)
         self.ui.btnfix.clicked.connect(self.FixEPUBs)
         self.ui.treeWidget.setColumnWidth(0, 230)
-        self.warningcolor = QtGui.QColor("yellow")
+        self.warningcolor = QtGui.QColor("orange")
         self.okcolor = QtGui.QColor("green")
         self.errorcolor = QtGui.QColor("red")
         self.filesToFix = []
@@ -45,21 +45,25 @@ class Main(QtGui.QMainWindow):
         self.ui.btnfix.setEnabled(False)
         if len(self.filesToFix) > 0:
             for path, treeItem in self.filesToFix:
-                test = epub.EpubFile(path)
+                test = epub.EpubFile(path, "rw")
                 for item in test.opf.manifest:
                     if str.startswith(str(item.mimetype), "image"):
-                        fakefile = StringIO(item.read())
-                        img = Image.open(fakefile)
+                        fakefile = StringIO()
+                        img = Image.open(StringIO(item.read()))
                         if self.testImage(img):
                             area = 1980000
                             width, height = img.size
                             resize = math.sqrt(area)/math.sqrt(width*height)
                             width = math.floor(width*resize)
                             height = math.floor(height*resize)
-                            img.resize((int(width), int(height)), Image.ANTIALIAS)
-                            #this is borked need to rework the epub module
-                            #item.write(img.tostring())
+                            img = img.resize((int(width), int(height)))
+                            img.save(fakefile, "JPEG")
+                            item.write(fakefile.getvalue())
+                            test.save()
                             print "writing "+item.archloc+" to "+path
+                            treeItem.setText(1, "FIXED!")
+                            treeItem.setTextColor(1, self.okcolor)
+                test.close()
         else:
             QtGui.QMessageBox.information(self
             , "No Files To Fix"
@@ -94,8 +98,8 @@ class Main(QtGui.QMainWindow):
         for root, subFolders, files in os.walk(str(epubsfolder)):
             for file in files:
                 fname = file
-                ebook = QtGui.QTreeWidgetItem()
                 if fname.endswith("epub") and not os.path.isdir(fname):
+                    ebook = QtGui.QTreeWidgetItem()
                     FilesScanned = FilesScanned + 1
                     fullfile = os.path.join(root, fname)
                     images = 0
@@ -111,6 +115,7 @@ class Main(QtGui.QMainWindow):
                                 img = Image.open(StringIO(item.read()))
                                 if self.testImage(img):
                                     images_corrected = images_corrected+1
+                        test.close()
                     except:
                         images_corrected = -1        
                     ebook.setText(2, str(images))
@@ -131,7 +136,7 @@ class Main(QtGui.QMainWindow):
                     ebook.setText(4, nicesize)
                     TotalImagesFound = TotalImagesFound + images
                     TotalImagesFix = TotalImagesFix + images_corrected
-                self.ui.treeWidget.addTopLevelItem(ebook)
+                    self.ui.treeWidget.addTopLevelItem(ebook)
                 self.ui.treeWidget.repaint()
             
         endtime = int(time.time())
