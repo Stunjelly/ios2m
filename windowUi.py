@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'mainwindow.ui'
 #
-# Created: Mon Apr 23 13:34:37 2012
+# Created: Mon Apr 23 17:02:13 2012
 #      by: PyQt4 UI code generator 4.9
 #
 # WARNING! All changes made in this file will be lost!
@@ -20,7 +20,7 @@ class Ui_MainWindow(object):
         MainWindow.resize(820, 582)
         MainWindow.setMinimumSize(QtCore.QSize(820, 0))
         icon = QtGui.QIcon()
-        icon.addPixmap(QtGui.QPixmap(_fromUtf8(":/icons/iBooks.ico")), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        icon.addPixmap(QtGui.QPixmap(_fromUtf8(":/icons/iBooks.png")), QtGui.QIcon.Normal, QtGui.QIcon.Off)
         MainWindow.setWindowIcon(icon)
         MainWindow.setStyleSheet(_fromUtf8(""))
         self.centralwidget = QtGui.QWidget(MainWindow)
@@ -40,7 +40,7 @@ class Ui_MainWindow(object):
         self.widget.setMinimumSize(QtCore.QSize(0, 60))
         self.widget.setObjectName(_fromUtf8("widget"))
         self.btn_source = QtGui.QPushButton(self.widget)
-        self.btn_source.setGeometry(QtCore.QRect(90, 0, 91, 23))
+        self.btn_source.setGeometry(QtCore.QRect(90, 0, 111, 23))
         self.btn_source.setObjectName(_fromUtf8("btn_source"))
         self.btnfix = QtGui.QPushButton(self.widget)
         self.btnfix.setGeometry(QtCore.QRect(0, 0, 81, 23))
@@ -49,14 +49,14 @@ class Ui_MainWindow(object):
         self.btnabout.setGeometry(QtCore.QRect(0, 30, 81, 23))
         self.btnabout.setObjectName(_fromUtf8("btnabout"))
         self.btn_dest = QtGui.QPushButton(self.widget)
-        self.btn_dest.setGeometry(QtCore.QRect(90, 30, 91, 23))
+        self.btn_dest.setGeometry(QtCore.QRect(90, 30, 111, 23))
         self.btn_dest.setObjectName(_fromUtf8("btn_dest"))
         self.sourcelabel = QtGui.QLabel(self.widget)
-        self.sourcelabel.setGeometry(QtCore.QRect(190, 0, 621, 21))
+        self.sourcelabel.setGeometry(QtCore.QRect(210, 0, 601, 21))
         self.sourcelabel.setText(_fromUtf8(""))
         self.sourcelabel.setObjectName(_fromUtf8("sourcelabel"))
         self.destlabel = QtGui.QLabel(self.widget)
-        self.destlabel.setGeometry(QtCore.QRect(190, 30, 621, 21))
+        self.destlabel.setGeometry(QtCore.QRect(210, 30, 601, 21))
         self.destlabel.setText(_fromUtf8(""))
         self.destlabel.setObjectName(_fromUtf8("destlabel"))
         self.gridLayout.addWidget(self.widget, 1, 0, 1, 1)

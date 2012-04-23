@@ -21,7 +21,7 @@
   </property>
   <property name="windowIcon">
    <iconset resource="resources.qrc">
-    <normaloff>:/icons/iBooks.ico</normaloff>:/icons/iBooks.ico</iconset>
+    <normaloff>:/icons/iBooks.png</normaloff>:/icons/iBooks.png</iconset>
   </property>
   <property name="styleSheet">
    <string notr="true"/>
@@ -97,7 +97,7 @@
         <rect>
          <x>90</x>
          <y>0</y>
-         <width>91</width>
+         <width>111</width>
          <height>23</height>
         </rect>
        </property>
@@ -136,7 +136,7 @@
         <rect>
          <x>90</x>
          <y>30</y>
-         <width>91</width>
+         <width>111</width>
          <height>23</height>
         </rect>
        </property>
@@ -147,9 +147,9 @@
       <widget class="QLabel" name="sourcelabel">
        <property name="geometry">
         <rect>
-         <x>190</x>
+         <x>210</x>
          <y>0</y>
-         <width>621</width>
+         <width>601</width>
          <height>21</height>
         </rect>
        </property>
@@ -160,9 +160,9 @@
       <widget class="QLabel" name="destlabel">
        <property name="geometry">
         <rect>
-         <x>190</x>
+         <x>210</x>
          <y>30</y>
-         <width>621</width>
+         <width>601</width>
          <height>21</height>
         </rect>
        </property>
