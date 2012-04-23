@@ -28,7 +28,9 @@ class Main(QtGui.QMainWindow):
         self.setWindowTitle(self.progname + " " + self.version + " - " + self.author)
         self.workingdir = ""
         epub.EpubFile
-        self.ui.btnopen.clicked.connect(self.GetEPUBsFromFolder)
+        self.ui.btn_source.clicked.connect(self.ChooseSource)
+        self.ui.btn_dest.clicked.connect(self.ChooseDestination)
+        
         self.ui.btnabout.clicked.connect(self.AboutDialog)
         self.ui.btnfix.clicked.connect(self.FixEPUBs)
         self.ui.treeWidget.setColumnWidth(0, 230)
@@ -38,39 +40,46 @@ class Main(QtGui.QMainWindow):
         self.filesToFix = []
         
         self.DirEpub = ""
+        self.DestinationDir = ""
         
     def FixEPUBs(self):
-        self.ui.btnopen.setEnabled(False)
+        self.ui.btn_source.setEnabled(False)
         self.ui.btnabout.setEnabled(False)
         self.ui.btnfix.setEnabled(False)
-        if len(self.filesToFix) > 0:
-            for path, treeItem in self.filesToFix:
-                test = epub.EpubFile(path, "rw")
-                for item in test.opf.manifest:
-                    if str.startswith(str(item.mimetype), "image"):
-                        fakefile = StringIO()
-                        img = Image.open(StringIO(item.read()))
-                        if self.testImage(img):
-                            area = 1980000
-                            width, height = img.size
-                            resize = math.sqrt(area)/math.sqrt(width*height)
-                            width = math.floor(width*resize)
-                            height = math.floor(height*resize)
-                            img = img.resize((int(width), int(height)))
-                            img.save(fakefile, "JPEG")
-                            item.write(fakefile.getvalue())
-                            test.save()
-                            print "writing "+item.archloc+" to "+path
-                            treeItem.setText(1, "FIXED!")
-                            treeItem.setTextColor(1, self.okcolor)
-                test.close()
+        if not self.DestinationDir == "":
+            if len(self.filesToFix) > 0:
+                for path, treeItem in self.filesToFix:
+                    test = epub.EpubFile(path, "rw")
+                    for item in test.opf.manifest:
+                        if str.startswith(str(item.mimetype), "image"):
+                            fakefile = StringIO()
+                            img = Image.open(StringIO(item.read("rb")))
+                            if self.testImage(img):
+                                area = 1980000
+                                width, height = img.size
+                                resize = math.sqrt(area)/math.sqrt(width*height)
+                                width = math.floor(width*resize)
+                                height = math.floor(height*resize)
+                                img = img.resize((int(width), int(height)))
+                                img.save(fakefile, "JPEG")
+                                item.write(fakefile.getvalue())
+                                test.save()
+                                print "writing "+item.archloc+" to "+path
+                                treeItem.setText(1, "FIXED!")
+                                treeItem.setTextColor(1, self.okcolor)
+                    test.close()
+            else:
+                QtGui.QMessageBox.information(self
+                , "No Files To Fix"
+                , "Please select a folder first"
+                , QtGui.QMessageBox.Ok)
         else:
-            QtGui.QMessageBox.information(self
-            , "No Files To Fix"
-            , "Please select a folder first"
-            , QtGui.QMessageBox.Ok)
+            QtGui.QMessageBox.warning(self
+                , "Warning"
+                , "You have to set a destination folder before attempting to fix"
+                , QtGui.QMessageBox.Ok)
         
-        self.ui.btnopen.setEnabled(True)
+        self.ui.btn_source.setEnabled(True)
         self.ui.btnabout.setEnabled(True)
         self.ui.btnfix.setEnabled(True)
     
@@ -86,8 +95,9 @@ class Main(QtGui.QMainWindow):
         else:
             return False
          
+    
     def AddEpubToList(self, epubsfolder):
-        self.ui.btnopen.setEnabled(False)
+        self.ui.btn_source.setEnabled(False)
         self.ui.btnabout.setEnabled(False)
         self.ui.btnfix.setEnabled(False)
         TotalImagesFix = 0
@@ -107,17 +117,17 @@ class Main(QtGui.QMainWindow):
                     ebook.setText(0, fname)
                     self.ui.statusbar.showMessage("Checking " + fname + "...")
                     print "Checking " + fname + "..."
-                    try:
-                        test = epub.EpubFile(fullfile)
-                        for item in test.opf.manifest:
-                            if str.startswith(str(item.mimetype), "image"):
-                                images = images+1
-                                img = Image.open(StringIO(item.read()))
-                                if self.testImage(img):
-                                    images_corrected = images_corrected+1
-                        test.close()
-                    except:
-                        images_corrected = -1        
+#                    try:
+                    test = epub.EpubFile(fullfile)
+                    for item in test.opf.manifest:
+                        if str.startswith(str(item.mimetype), "image"):
+                            images = images+1
+                            img = Image.open(StringIO(item.read("rb")))
+                            if self.testImage(img):
+                                images_corrected = images_corrected+1
+                    test.close()
+#                    except:
+#                        images_corrected = -1        
                     ebook.setText(2, str(images))
                     ebook.setText(3, str(images_corrected))
                     if images_corrected == 0:
@@ -148,7 +158,8 @@ class Main(QtGui.QMainWindow):
             , "EPUBs Scanned:\t" + str(FilesScanned) + "\nImages Found:\t\t" + str(TotalImagesFound) + "\nImages Over Limit:\t" + str(TotalImagesFix) + "\nEPUBs Affected:\t" + str(EpubsAffected) + "\n\nTime Taken:\t" + displaytime
             , QtGui.QMessageBox.Ok)
         
-        self.ui.btnopen.setEnabled(True)
+        self.ui.btn_source.setEnabled(True)
+        self.ui.btn_dest.setEnabled(True)
         self.ui.btnabout.setEnabled(True)
         self.ui.btnfix.setEnabled(True)
 
@@ -173,7 +184,7 @@ class Main(QtGui.QMainWindow):
             output = output + str(int(seconds)) + "s "
         return output
 
-    def GetEPUBsFromFolder(self):
+    def ChooseSource(self):
         #On button press, open file dialog
         epubsfolder = QtGui.QFileDialog.getExistingDirectory(self, "Choose folder containing EPUBS", 
                 "",
@@ -184,7 +195,21 @@ class Main(QtGui.QMainWindow):
         else:
             self.workingdir = epubsfolder
             self.DirEpub = epubsfolder
-            return self.AddEpubToList(epubsfolder)
+            self.ui.sourcelabel.setText(str(epubsfolder))
+            self.ChooseDestination
+            self.AddEpubToList(epubsfolder)
+
+    def ChooseDestination(self):
+        #On button press, open file dialog
+        epubsfolder = QtGui.QFileDialog.getExistingDirectory(self, "Choose destination for fixed items", 
+                "",
+                QtGui.QFileDialog.ShowDirsOnly
+                | QtGui.QFileDialog.DontResolveSymlinks)
+        if epubsfolder == "":
+            print "User cancelled file dialog."
+        else:
+            self.ui.destlabel.setText(str(epubsfolder))
+            self.DestinationDir = epubsfolder
 
     def prettySize(self, size):
         suffixes = [("B",2**10), ("K",2**20), ("MB",2**30), ("GB",2**40), ("T",2**50)]

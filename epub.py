@@ -78,15 +78,15 @@ class EpubItem (object):
         self.mimetype = "text/plain"
         self.archive = archive
 
-    def open (self):
+    def open (self, mode="r"):
         try:
-            return open(os.path.normpath(os.path.join(self.tmpdir, self.archloc)), "r")
+            return open(os.path.normpath(os.path.join(self.tmpdir, self.archloc)), mode)
         except:
             raise IOError, "Cannot open '%s' for reading" % self.archloc
        
-    def read (self):
+    def read (self, mode="r"):
         try:
-            f= self.open()
+            f= self.open(mode)
             t = f.read()
             f.close()
             return t

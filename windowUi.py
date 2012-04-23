@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'mainwindow.ui'
 #
-# Created: Tue Apr 10 09:12:49 2012
+# Created: Mon Apr 23 13:34:37 2012
 #      by: PyQt4 UI code generator 4.9
 #
 # WARNING! All changes made in this file will be lost!
@@ -17,7 +17,8 @@ except AttributeError:
 class Ui_MainWindow(object):
     def setupUi(self, MainWindow):
         MainWindow.setObjectName(_fromUtf8("MainWindow"))
-        MainWindow.resize(823, 450)
+        MainWindow.resize(820, 582)
+        MainWindow.setMinimumSize(QtCore.QSize(820, 0))
         icon = QtGui.QIcon()
         icon.addPixmap(QtGui.QPixmap(_fromUtf8(":/icons/iBooks.ico")), QtGui.QIcon.Normal, QtGui.QIcon.Off)
         MainWindow.setWindowIcon(icon)
@@ -36,17 +37,28 @@ class Ui_MainWindow(object):
         self.treeWidget.header().setDefaultSectionSize(110)
         self.gridLayout.addWidget(self.treeWidget, 0, 0, 1, 1)
         self.widget = QtGui.QWidget(self.centralwidget)
-        self.widget.setMinimumSize(QtCore.QSize(0, 23))
+        self.widget.setMinimumSize(QtCore.QSize(0, 60))
         self.widget.setObjectName(_fromUtf8("widget"))
-        self.btnopen = QtGui.QPushButton(self.widget)
-        self.btnopen.setGeometry(QtCore.QRect(0, 0, 111, 23))
-        self.btnopen.setObjectName(_fromUtf8("btnopen"))
+        self.btn_source = QtGui.QPushButton(self.widget)
+        self.btn_source.setGeometry(QtCore.QRect(90, 0, 91, 23))
+        self.btn_source.setObjectName(_fromUtf8("btn_source"))
         self.btnfix = QtGui.QPushButton(self.widget)
-        self.btnfix.setGeometry(QtCore.QRect(120, 0, 81, 23))
+        self.btnfix.setGeometry(QtCore.QRect(0, 0, 81, 23))
         self.btnfix.setObjectName(_fromUtf8("btnfix"))
         self.btnabout = QtGui.QPushButton(self.widget)
-        self.btnabout.setGeometry(QtCore.QRect(210, 0, 81, 23))
+        self.btnabout.setGeometry(QtCore.QRect(0, 30, 81, 23))
         self.btnabout.setObjectName(_fromUtf8("btnabout"))
+        self.btn_dest = QtGui.QPushButton(self.widget)
+        self.btn_dest.setGeometry(QtCore.QRect(90, 30, 91, 23))
+        self.btn_dest.setObjectName(_fromUtf8("btn_dest"))
+        self.sourcelabel = QtGui.QLabel(self.widget)
+        self.sourcelabel.setGeometry(QtCore.QRect(190, 0, 621, 21))
+        self.sourcelabel.setText(_fromUtf8(""))
+        self.sourcelabel.setObjectName(_fromUtf8("sourcelabel"))
+        self.destlabel = QtGui.QLabel(self.widget)
+        self.destlabel.setGeometry(QtCore.QRect(190, 30, 621, 21))
+        self.destlabel.setText(_fromUtf8(""))
+        self.destlabel.setObjectName(_fromUtf8("destlabel"))
         self.gridLayout.addWidget(self.widget, 1, 0, 1, 1)
         MainWindow.setCentralWidget(self.centralwidget)
         self.statusbar = QtGui.QStatusBar(MainWindow)
@@ -64,8 +76,9 @@ class Ui_MainWindow(object):
         self.treeWidget.headerItem().setText(2, QtGui.QApplication.translate("MainWindow", "Images Found", None, QtGui.QApplication.UnicodeUTF8))
         self.treeWidget.headerItem().setText(3, QtGui.QApplication.translate("MainWindow", "Requires Fix", None, QtGui.QApplication.UnicodeUTF8))
         self.treeWidget.headerItem().setText(4, QtGui.QApplication.translate("MainWindow", "Size", None, QtGui.QApplication.UnicodeUTF8))
-        self.btnopen.setText(QtGui.QApplication.translate("MainWindow", "Select Folder", None, QtGui.QApplication.UnicodeUTF8))
+        self.btn_source.setText(QtGui.QApplication.translate("MainWindow", "Source", None, QtGui.QApplication.UnicodeUTF8))
         self.btnfix.setText(QtGui.QApplication.translate("MainWindow", "Fix EPUBs", None, QtGui.QApplication.UnicodeUTF8))
         self.btnabout.setText(QtGui.QApplication.translate("MainWindow", "About", None, QtGui.QApplication.UnicodeUTF8))
+        self.btn_dest.setText(QtGui.QApplication.translate("MainWindow", "Destination", None, QtGui.QApplication.UnicodeUTF8))
 
 import resources_rc

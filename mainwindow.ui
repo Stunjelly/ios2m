@@ -6,9 +6,15 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>823</width>
-    <height>450</height>
+    <width>820</width>
+    <height>582</height>
    </rect>
+  </property>
+  <property name="minimumSize">
+   <size>
+    <width>820</width>
+    <height>0</height>
+   </size>
   </property>
   <property name="windowTitle">
    <string>iOS2M - Stunjelly eBook Services</string>
@@ -83,26 +89,26 @@
       <property name="minimumSize">
        <size>
         <width>0</width>
-        <height>23</height>
+        <height>60</height>
        </size>
       </property>
-      <widget class="QPushButton" name="btnopen">
+      <widget class="QPushButton" name="btn_source">
        <property name="geometry">
         <rect>
-         <x>0</x>
+         <x>90</x>
          <y>0</y>
-         <width>111</width>
+         <width>91</width>
          <height>23</height>
         </rect>
        </property>
        <property name="text">
-        <string>Select Folder</string>
+        <string>Source</string>
        </property>
       </widget>
       <widget class="QPushButton" name="btnfix">
        <property name="geometry">
         <rect>
-         <x>120</x>
+         <x>0</x>
          <y>0</y>
          <width>81</width>
          <height>23</height>
@@ -115,14 +121,53 @@
       <widget class="QPushButton" name="btnabout">
        <property name="geometry">
         <rect>
-         <x>210</x>
-         <y>0</y>
+         <x>0</x>
+         <y>30</y>
          <width>81</width>
          <height>23</height>
         </rect>
        </property>
        <property name="text">
         <string>About</string>
+       </property>
+      </widget>
+      <widget class="QPushButton" name="btn_dest">
+       <property name="geometry">
+        <rect>
+         <x>90</x>
+         <y>30</y>
+         <width>91</width>
+         <height>23</height>
+        </rect>
+       </property>
+       <property name="text">
+        <string>Destination</string>
+       </property>
+      </widget>
+      <widget class="QLabel" name="sourcelabel">
+       <property name="geometry">
+        <rect>
+         <x>190</x>
+         <y>0</y>
+         <width>621</width>
+         <height>21</height>
+        </rect>
+       </property>
+       <property name="text">
+        <string/>
+       </property>
+      </widget>
+      <widget class="QLabel" name="destlabel">
+       <property name="geometry">
+        <rect>
+         <x>190</x>
+         <y>30</y>
+         <width>621</width>
+         <height>21</height>
+        </rect>
+       </property>
+       <property name="text">
+        <string/>
        </property>
       </widget>
      </widget>
