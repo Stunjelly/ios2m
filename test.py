@@ -75,6 +75,11 @@ class Main(QtGui.QMainWindow):
                                 treeItem.setText(1, "FIXED!")
                                 treeItem.setTextColor(1, self.okcolor)
                     test.close()
+                
+                QtGui.QMessageBox.information(self
+                , "Fixing Complete"
+                , "Please find ammended files here: "+self.DestinationDir
+                , QtGui.QMessageBox.Ok)
             else:
                 QtGui.QMessageBox.information(self
                 , "No Files To Fix"
