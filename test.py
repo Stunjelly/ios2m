@@ -9,6 +9,7 @@ import os
 import base64
 import time
 import subprocess
+import shutil
 from PyQt4 import QtCore, QtGui, QtNetwork
 from windowUi import Ui_MainWindow
 from StringIO import StringIO
@@ -45,11 +46,20 @@ class Main(QtGui.QMainWindow):
     def FixEPUBs(self):
         self.ui.btn_source.setEnabled(False)
         self.ui.btnabout.setEnabled(False)
+        self.ui.btn_dest.setEnabled(False)
         self.ui.btnfix.setEnabled(False)
         if not self.DestinationDir == "":
             if len(self.filesToFix) > 0:
                 for path, treeItem in self.filesToFix:
-                    test = epub.EpubFile(path, "rw")
+                    basename = os.path.basename(path)
+                    if not os.path.exists(os.path.normpath(os.path.join(self.DestinationDir, basename))):
+                        shutil.copy2(path, os.path.normpath(os.path.join(self.DestinationDir, basename)))
+                        newpath = os.path.normpath(os.path.join(self.DestinationDir, basename))
+                    else:
+                        treeItem.setText(1, "ERROR")
+                        treeItem.setTextColor(1, self.errorcolor)
+                        break
+                    test = epub.EpubFile(newpath, "rw")
                     for item in test.opf.manifest:
                         if str.startswith(str(item.mimetype), "image"):
                             fakefile = StringIO()
@@ -80,6 +90,7 @@ class Main(QtGui.QMainWindow):
                 , QtGui.QMessageBox.Ok)
         
         self.ui.btn_source.setEnabled(True)
+        self.ui.btn_dest.setEnabled(True)
         self.ui.btnabout.setEnabled(True)
         self.ui.btnfix.setEnabled(True)
     
@@ -99,6 +110,7 @@ class Main(QtGui.QMainWindow):
     def AddEpubToList(self, epubsfolder):
         self.ui.btn_source.setEnabled(False)
         self.ui.btnabout.setEnabled(False)
+        self.ui.btn_dest.setEnabled(False)
         self.ui.btnfix.setEnabled(False)
         TotalImagesFix = 0
         TotalImagesFound = 0
@@ -117,17 +129,17 @@ class Main(QtGui.QMainWindow):
                     ebook.setText(0, fname)
                     self.ui.statusbar.showMessage("Checking " + fname + "...")
                     print "Checking " + fname + "..."
-#                    try:
-                    test = epub.EpubFile(fullfile)
-                    for item in test.opf.manifest:
-                        if str.startswith(str(item.mimetype), "image"):
-                            images = images+1
-                            img = Image.open(StringIO(item.read("rb")))
-                            if self.testImage(img):
-                                images_corrected = images_corrected+1
-                    test.close()
-#                    except:
-#                        images_corrected = -1        
+                    try:
+                        test = epub.EpubFile(fullfile)
+                        for item in test.opf.manifest:
+                            if str.startswith(str(item.mimetype), "image"):
+                                images = images+1
+                                img = Image.open(StringIO(item.read("rb")))
+                                if self.testImage(img):
+                                    images_corrected = images_corrected+1
+                        test.close()
+                    except:
+                        images_corrected = -1        
                     ebook.setText(2, str(images))
                     ebook.setText(3, str(images_corrected))
                     if images_corrected == 0:
@@ -145,7 +157,8 @@ class Main(QtGui.QMainWindow):
                     nicesize = self.prettySize(epubsize)
                     ebook.setText(4, nicesize)
                     TotalImagesFound = TotalImagesFound + images
-                    TotalImagesFix = TotalImagesFix + images_corrected
+                    if not images_corrected == -1:
+                        TotalImagesFix = TotalImagesFix + images_corrected
                     self.ui.treeWidget.addTopLevelItem(ebook)
                 self.ui.treeWidget.repaint()
             
@@ -209,7 +222,7 @@ class Main(QtGui.QMainWindow):
             print "User cancelled file dialog."
         else:
             self.ui.destlabel.setText(str(epubsfolder))
-            self.DestinationDir = epubsfolder
+            self.DestinationDir = str(epubsfolder)
 
     def prettySize(self, size):
         suffixes = [("B",2**10), ("K",2**20), ("MB",2**30), ("GB",2**40), ("T",2**50)]
