@@ -52,13 +52,10 @@ class Main(QtGui.QMainWindow):
             if len(self.filesToFix) > 0:
                 for path, treeItem in self.filesToFix:
                     basename = os.path.basename(path)
-                    if not os.path.exists(os.path.normpath(os.path.join(self.DestinationDir, basename))):
-                        shutil.copy2(path, os.path.normpath(os.path.join(self.DestinationDir, basename)))
-                        newpath = os.path.normpath(os.path.join(self.DestinationDir, basename))
-                    else:
-                        treeItem.setText(1, "ERROR")
-                        treeItem.setTextColor(1, self.errorcolor)
-                        break
+                    if os.path.exists(os.path.normpath(os.path.join(self.DestinationDir, basename))):
+                        os.remove(os.path.normpath(os.path.join(self.DestinationDir, basename)))
+                    shutil.copy2(path, os.path.normpath(os.path.join(self.DestinationDir, basename)))
+                    newpath = os.path.normpath(os.path.join(self.DestinationDir, basename))
                     test = epub.EpubFile(newpath, "rw")
                     for item in test.opf.manifest:
                         if str.startswith(str(item.mimetype), "image"):
