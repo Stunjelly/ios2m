@@ -93,9 +93,9 @@ class EpubItem (object):
         except:
             raise IOError, "Cannot open '%s' for reading" % self.archloc
     
-    def write (self, data, stor=False):
+    def write (self, data, mode="w", stor=False):
         #try:
-        out = open(os.path.normpath(os.path.join(self.tmpdir, self.archloc)), "w")
+        out = open(os.path.normpath(os.path.join(self.tmpdir, self.archloc)), mode)
         #except:
         #    raise IOError, "Cannot open '%s' for writing" % os.path.normpath(os.path.join(self.tmpdir, self.archloc))
         

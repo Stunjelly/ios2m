@@ -72,7 +72,7 @@ class Main(QtGui.QMainWindow):
                                     img.save(fakefile, "JPEG")
                                 if str.endswith(str(item.mimetype), "png"):
                                     img.save(fakefile, "PNG")
-                                item.write(fakefile.getvalue())
+                                item.write(fakefile.getvalue(), mode="wb")
                                 test.save()
                                 print "writing "+item.archloc+" to "+path
                                 treeItem.setText(1, "FIXED!")
